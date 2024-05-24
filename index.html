@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(h.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color:#D0E9CC;
+            border-radius:20px;
+        }
+        fieldset {
+            border: 1px solid  #0094FF;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        legend {
+            font-weight: bold;
+            border:5px solid  #0094FF;
+        }
+        .cv-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .cv-section {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .cv-image {
+            float: right;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+        .watermark {
+            position: absolute;
+            opacity: 0.5;
+            font-size: 48px;
+            transform: rotate(-45deg);
+            color: #cccccc;
+        }
+        .loader {
+            display: none;
+            text-align: center;
+        }
+        .rating-popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-align: center;
+            background-color: rgb(70, 198, 221);
+        }
+        .rating-popup img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .rating-popup h3 {
+            margin: 10px 0;
+        }
+        .stars {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .stars span {
+            font-size: 30px;
+            cursor: pointer;
+        }
+        @media print {
+            .print-button {
+                display: none;
+            }
+        }
+        @media (max-width: 700px) {
+            input, textarea, button {
+                width: 100%;
+                margin-bottom: 15px;
+                font-size: 18px;
+                padding: 15px;
+            }
+        }
+        button{
+            cursor: pointer;
+          background-color: #0094FF;
+          border-radius:20px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CV Generator</h1>
+        <div id="form-container">
+            <fieldset>
+                <legend>Personal Information</legend>
+                <label for="name">Name:</label>
+                <input type="text" id="name"><br><br>
+                <label for="birth-date">Birth Date:</label>
+                <input type="date" id="birth-date"><br><br>
+                <label for="residence">Residence:</label>
+                <input type="text" id="residence"><br><br>
+                <label for="image">Upload Image:</label>
+                <input type="file" id="image" accept="image/*"><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Education Information</legend>
+                <label for="education">Education:</label>
+                <textarea id="education" rows="4" cols="50"></textarea><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Skills</legend>
+                <label for="skills">Skills:</label>
+                <textarea id="skills" rows="4" cols="50"></textarea><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Experience</legend>
+                <label for="experience">Experience:</label>
+                <textarea id="experience" rows="4" cols="50"></textarea><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Referee Information</legend>
+                <label for="referee">Referee:</label>
+                <textarea id="referee" rows="4" cols="50"></textarea><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Language Skills</legend>
+                <label for="language">Language Skills:</label>
+                <textarea id="language" rows="4" cols="50"></textarea><br><br>
+            </fieldset>
+            
+            <button onclick="generateCV()">Generate CV</button>
+        </div>
+
+        <div id="loader" class="loader">Please wait for the system to generate your CV...</div>
+
+        <div id="cv-container" class="cv-container">
+            <div class="cv-section">
+                <img id="cv-image" class="cv-image" src="" alt="User Image" width="100" height="100">
+                <h2>Personal Information</h2>
+                <table>
+                    <tr><th>Name</th><td id="cv-name"></td></tr>
+                    <tr><th>Birth Date</th><td id="cv-birth-date"></td></tr>
+                    <tr><th>Residence</th><td id="cv-residence"></td></tr>
+                </table>
+            </div>
+            <div class="cv-section">
+                <div class="watermark">UNITED REPUBLIC OF TANZANIA</div>
+                <h2>Education Information</h2>
+                <table>
+                    <tr><th>Details</th></tr>
+                    <tr><td id="cv-education"></td></tr>
+                </table>
+            </div>
+            <div class="cv-section">
+                <h2>Skills</h2>
+                <table>
+                    <tr><th>Details</th></tr>
+                    <tr><td id="cv-skills"></td></tr>
+                </table>
+            </div>
+            <div class="cv-section">
+                <h2>Experience</h2>
+                <table>
+                    <tr><th>Details</th></tr>
+                    <tr><td id="cv-experience"></td></tr>
+                </table>
+            </div>
+            <div class="cv-section">
+                <h2>Referee Information</h2>
+                <table>
+                    <tr><th>Details</th></tr>
+                    <tr><td id="cv-referee"></td></tr>
+                </table>
+            </div>
+            <div class="cv-section">
+                <h2>Language Skills</h2>
+                <table>
+                    <tr><th>Details</th></tr>
+                    <tr><td id="cv-language"></td></tr>
+                </table>
+            </div>
+            <button class="print-button" onclick="printCV()">Print CV</button>
+        </div>
+    </div>
+
+    <div id="rating-popup" class="rating-popup">
+        <img src="ko.jpg" alt="Msangi JR">
+        <h3>Rate Msangi JR</h3>
+        <div class="stars">
+            <span onclick="rate(1)">★</span>
+            <span onclick="rate(2)">★</span>
+            <span onclick="rate(3)">★</span>
+            <span onclick="rate(4)">★</span>
+            <span onclick="rate(5)">★</span>
+        </div>
+        <p id="rating-message"></p>
+    </div>
+
+    <script>
+        function generateCV() {
+            document.getElementById('loader').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('cv-container').style.display = 'block';
+                document.getElementById('form-container').style.display = 'none';
+
+                // Fetch user input and populate CV
+                document.getElementById('cv-name').innerText = document.getElementById('name').value;
+                document.getElementById('cv-birth-date').innerText = document.getElementById('birth-date').value;
+                document.getElementById('cv-residence').innerText = document.getElementById('residence').value;
+
+                const imageInput = document.getElementById('image');
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('cv-image').src = e.target.result;
+                    }
+                    reader.readAsDataURL(imageInput.files[0]);
+                }
+
+                document.getElementById('cv-education').innerText = document.getElementById('education').value;
+                document.getElementById('cv-skills').innerText = document.getElementById('skills').value;
+                document.getElementById('cv-experience').innerText = document.getElementById('experience').value;
+                document.getElementById('cv-referee').innerText = document.getElementById('referee').value;
+                document.getElementById('cv-language').innerText = document.getElementById('language').value;
+            }, 2000);
+        }
+
+        function printCV() {
+            window.print();
+            setTimeout(() => {
+                document.getElementById('rating-popup').style.display = 'block';
+            }, 3000);
+        }
+
+        function rate(stars) {
+            document.getElementById('rating-message').innerText = `Thank you for rating ${stars} stars!`;
+            setTimeout(() => {
+                document.getElementById('rating-popup').style.display = 'none';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
